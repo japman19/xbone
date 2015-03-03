@@ -1,5 +1,5 @@
 --- xpad.c.original	2015-03-02 21:40:18.083854977 +0000
-+++ xpad.c	2015-03-02 21:41:55.835852982 +0000
++++ xpad.c	2015-03-03 11:45:57.357186216 +0000
 @@ -77,6 +77,7 @@
  #include <linux/slab.h>
  #include <linux/stat.h>
@@ -370,23 +370,7 @@
  	}
  
  	return 0;
-@@ -999,6 +1143,7 @@
- 
- static int xpad_probe(struct usb_interface *intf, const struct usb_device_id *id)
- {
-+
- 	struct usb_device *udev = interface_to_usbdev(intf);
- 	struct usb_xpad *xpad;
- 	struct input_dev *input_dev;
-@@ -1019,6 +1164,7 @@
- 		 * same interface class, subclass and protocol. Differentiate by
- 		 * interface number.
- 		 */
-+
- 		return -ENODEV;
- 	}
- 
-@@ -1130,7 +1276,7 @@
+@@ -1130,7 +1274,7 @@
  		goto fail5;
  
  	/* Xbox One controller has in/out endpoints swapped. */
@@ -395,17 +379,3 @@
  	ep_irq_in = &intf->cur_altsetting->endpoint[ep_irq_in_idx].desc;
  
  	usb_fill_int_urb(xpad->irq_in, udev,
-@@ -1140,9 +1286,13 @@
- 	xpad->irq_in->transfer_dma = xpad->idata_dma;
- 	xpad->irq_in->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
- 
-+	//return -ENODEV;
-+
- 	error = input_register_device(xpad->dev);
--	if (error)
-+
-+	if (error){
- 		goto fail6;
-+	}
- 
- 	usb_set_intfdata(intf, xpad);
